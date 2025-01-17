@@ -16,7 +16,8 @@ public class Board implements Serializable {
     private String title;
     private String content;
     private String writer;
-    private Integer viewCount;
+    @Column(name = "view_count", nullable = false, columnDefinition = "int default 0")
+    private Integer viewCount = 0;
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date createDate;

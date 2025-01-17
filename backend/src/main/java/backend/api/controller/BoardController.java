@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3010")
+@CrossOrigin(origins = "http://localhost:13010")
 @RequestMapping(value = "/api")
 @RestController
 public class BoardController {
@@ -27,21 +27,23 @@ public class BoardController {
         return ResponseEntity.ok(lists);
     }
 
-    @GetMapping(value = "/getOneData", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Board> getOneData(Board request){
-        Board data = boardService.findOneById(Long.valueOf(request.getId())).get();
+    @GetMapping(value = "/getOneData/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Board> getOneData(@PathVariable Integer id){
+        Board data = boardService.findOneById(Long.valueOf(id)).get();
         return ResponseEntity.ok(data);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Board> insertData(Board request){
-        Board data = boardService.insertBoardData(request);
-        return ResponseEntity.ok(data);
+    public ResponseEntity<List<Board>> insertData(@RequestBody Board request){
+        boardService.insertBoardData(request);
+        List<Board> lists = boardService.findAll();
+        return ResponseEntity.ok(lists);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Board> updateData(Board request){
-        Board data = boardService.updateBoardData(request);
-        return ResponseEntity.ok(data);
+    public ResponseEntity<List<Board>> updateData(Board request){
+        boardService.updateBoardData(request);
+        List<Board> lists = boardService.findAll();
+        return ResponseEntity.ok(lists);
     }
 }

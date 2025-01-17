@@ -2,6 +2,7 @@ package backend.api.service;
 
 import backend.api.entity.Board;
 import backend.api.repository.BoardRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,11 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
+    @Transactional
     public Optional<Board> findOneById (Long id){
-        return boardRepository.findById(id);
+        // 조회수 증가
+        boardRepository.incrementViewCount(Math.toIntExact(id));
+        return boardRepository.findByIdWithViewCount(Math.toIntExact(id));
     }
 
     public Board insertBoardData (Board data){
